@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ item.name or item.item_type }} — Care Instructions</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+
+    .header {
+      padding: 28px 20px 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .header.safe     { background: #1a7a3c; }
+    .header.caution  { background: #c17f00; }
+    .header.danger   { background: #c0392b; }
+
+    .alert-icon { font-size: 48px; margin-bottom: 8px; }
+    .alert-level { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }
+    .item-name { font-size: 24px; font-weight: 700; margin: 6px 0 4px; }
+    .item-brand { font-size: 15px; opacity: 0.85; }
+    .alert-reason {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.9;
+      background: rgba(0,0,0,0.15);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      margin: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+      padding: 16px 16px 8px;
+    }
+
+    .rule {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border-top: 1px solid #f0f0f0;
+      font-size: 16px;
+    }
+
+    .rule:first-of-type { border-top: none; }
+
+    .rule-icon { font-size: 22px; width: 36px; flex-shrink: 0; }
+    .rule-text { flex: 1; line-height: 1.4; }
+    .rule-status { font-size: 20px; margin-left: 8px; }
+
+    .notes .note {
+      padding: 12px 16px;
+      border-top: 1px solid #f0f0f0;
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+    .notes .note:first-of-type { border-top: none; }
+
+    .material-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #f0f0f0;
+    }
+    .material-cell {
+      background: white;
+      padding: 12px 16px;
+    }
+    .material-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+    .material-value { font-size: 15px; font-weight: 600; margin-top: 2px; }
+
+    .footer {
+      text-align: center;
+      padding: 24px 16px;
+      font-size: 12px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+{% set level = item.alert_level | lower %}
+{% set icons = {'safe': '✅', 'caution': '⚠️', 'danger': '🚨'} %}
+
+<div class="header {{ level }}">
+  <div class="alert-icon">{{ icons.get(level, '❓') }}</div>
+  <div class="alert-level">{{ level }}</div>
+  <div class="item-name">{{ item.name or item.item_type }}</div>
+  {% if item.brand %}<div class="item-brand">{{ item.brand }}</div>{% endif %}
+  {% if item.alert_reason %}
+  <div class="alert-reason">{{ item.alert_reason }}</div>
+  {% endif %}
+</div>
+
+<!-- Wash Instructions -->
+<div class="card">
+  <div class="card-title">Washing</div>
+
+  <div class="rule">
+    <div class="rule-icon">🫧</div>
+    <div class="rule-text">{{ item.care.wash }}</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-icon">🌡️</div>
+    <div class="rule-text">Water temperature: <strong>{{ item.care.water_temp | title }}</strong></div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-icon">🧴</div>
+    <div class="rule-text">Bleach</div>
+    <div class="rule-status">{{ '✅' if item.care.bleach else '❌' }}</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-icon">🧼</div>
+    <div class="rule-text">Fabric softener</div>
+    <div class="rule-status">{{ '✅' if item.care.fabric_softener else '❌' }}</div>
+  </div>
+</div>
+
+<!-- Drying Instructions -->
+<div class="card">
+  <div class="card-title">Drying</div>
+
+  <div class="rule">
+    <div class="rule-icon">🌀</div>
+    <div class="rule-text">Tumble dry{% if item.care.tumble_dry and item.care.dry_temp %} — <strong>{{ item.care.dry_temp | title }}</strong> heat{% endif %}</div>
+    <div class="rule-status">{{ '✅' if item.care.tumble_dry else '❌' }}</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-icon">🪢</div>
+    <div class="rule-text">Hang dry</div>
+    <div class="rule-status">{{ '✅' if item.care.hang_dry else '❌' }}</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-icon">♨️</div>
+    <div class="rule-text">Iron</div>
+    <div class="rule-status">{{ '✅' if item.care.iron else '❌' }}</div>
+  </div>
+
+  <div class="rule">
+    <div class="rule-icon">👔</div>
+    <div class="rule-text">Dry clean</div>
+    <div class="rule-status">{{ '✅' if item.care.dry_clean else '❌' }}</div>
+  </div>
+</div>
+
+<!-- Special Notes -->
+{% if item.care.special_instructions %}
+<div class="card">
+  <div class="card-title">Special Notes</div>
+  <div class="notes">
+    {% for note in item.care.special_instructions %}
+    <div class="note">• {{ note }}</div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Material -->
+{% set mat = item.material %}
+{% if mat %}
+<div class="card">
+  <div class="card-title">Material</div>
+  <div class="material-grid">
+    {% if mat.shell %}
+    <div class="material-cell">
+      <div class="material-label">Shell</div>
+      <div class="material-value">{{ mat.shell }}</div>
+    </div>
+    {% endif %}
+    {% if mat.lining %}
+    <div class="material-cell">
+      <div class="material-label">Lining</div>
+      <div class="material-value">{{ mat.lining }}</div>
+    </div>
+    {% endif %}
+    {% if mat.fill %}
+    <div class="material-cell">
+      <div class="material-label">Fill</div>
+      <div class="material-value">{{ mat.fill }}</div>
+    </div>
+    {% endif %}
+    {% if mat.primary %}
+    <div class="material-cell">
+      <div class="material-label">Material</div>
+      <div class="material-value">{{ mat.primary }}</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<div class="footer">Item {{ item.item_id }}</div>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+items.json
+qr_codes/
+__pycache__/
+*.pyc
+.env
+*.DS_Store

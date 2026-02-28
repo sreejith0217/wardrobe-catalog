@@ -1,0 +1,6 @@
+anthropic
+flask
+gunicorn
+supabase
+qrcode[pil]
+pillow
