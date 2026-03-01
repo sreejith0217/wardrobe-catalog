@@ -146,14 +146,18 @@
 
   <div class="rule">
     <div class="rule-icon">🌀</div>
-    <div class="rule-text">Tumble dry{% if item.care.tumble_dry and item.care.dry_temp %} — <strong>{{ item.care.dry_temp | title }}</strong> heat{% endif %}</div>
-    <div class="rule-status">{{ '✅' if item.care.tumble_dry else '❌' }}</div>
-  </div>
-
-  <div class="rule">
-    <div class="rule-icon">🪢</div>
-    <div class="rule-text">Hang dry</div>
-    <div class="rule-status">{{ '✅' if item.care.hang_dry else '❌' }}</div>
+    <div class="rule-text">
+      How to dry:
+      {% if item.care.tumble_dry and item.care.hang_dry %}
+        <strong>Tumble dry{% if item.care.dry_temp %} — {{ item.care.dry_temp | title }} heat{% endif %} or hang dry</strong>
+      {% elif item.care.tumble_dry %}
+        <strong>Tumble dry{% if item.care.dry_temp %} — {{ item.care.dry_temp | title }} heat{% endif %}</strong>
+      {% elif item.care.hang_dry %}
+        <strong>Hang dry</strong>
+      {% else %}
+        <strong>Air dry flat</strong>
+      {% endif %}
+    </div>
   </div>
 
   <div class="rule">
