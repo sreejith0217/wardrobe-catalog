@@ -19,3 +19,8 @@ def load_db():
 def save_item(item_id, item_data):
     client = get_client()
     client.table("items").upsert({"item_id": item_id, "data": item_data}).execute()
+
+
+def delete_item(item_id):
+    client = get_client()
+    client.table("items").delete().eq("item_id", item_id).execute()

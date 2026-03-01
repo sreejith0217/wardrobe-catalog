@@ -3,109 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ item.name or item.item_type }} — Care Instructions</title>
+  <title>{{ item.name or item.item_type }} — ThreadCare</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f5;
-      color: #1a1a1a;
+      background: #faf7f4;
+      color: #2d2416;
     }
 
+    /* ── Header ── */
     .header {
-      padding: 28px 20px 20px;
+      padding: 32px 24px 28px;
       text-align: center;
       color: white;
     }
 
-    .header.safe     { background: #1a7a3c; }
-    .header.caution  { background: #c17f00; }
-    .header.danger   { background: #c0392b; }
+    .header.safe    { background: #4a7c5a; }
+    .header.caution { background: #b8860b; }
+    .header.danger  { background: #a0522d; }
 
-    .alert-icon { font-size: 48px; margin-bottom: 8px; }
-    .alert-level { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }
-    .item-name { font-size: 24px; font-weight: 700; margin: 6px 0 4px; }
-    .item-brand { font-size: 15px; opacity: 0.85; }
-    .alert-reason {
-      margin-top: 12px;
-      font-size: 14px;
-      line-height: 1.5;
-      opacity: 0.9;
-      background: rgba(0,0,0,0.15);
-      border-radius: 8px;
-      padding: 10px 14px;
+    .wordmark {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 20px;
     }
 
-    .card {
-      background: white;
-      border-radius: 14px;
-      margin: 16px;
-      overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
+    .alert-icon { font-size: 44px; margin-bottom: 10px; }
 
-    .card-title {
+    .alert-badge {
+      display: inline-block;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: #888;
-      padding: 16px 16px 8px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 12px;
+      margin-bottom: 12px;
     }
 
+    .item-name  { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+    .item-brand { font-size: 15px; opacity: 0.8; }
+
+    .alert-reason {
+      margin-top: 16px;
+      font-size: 15px;
+      line-height: 1.55;
+      background: rgba(0,0,0,0.12);
+      border-radius: 10px;
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: white;
+      border-radius: 16px;
+      margin: 14px 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(45,36,22,0.07);
+    }
+
+    .card-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #a89880;
+      padding: 16px 18px 10px;
+    }
+
+    /* ── Rules ── */
     .rule {
       display: flex;
       align-items: center;
-      padding: 14px 16px;
-      border-top: 1px solid #f0f0f0;
-      font-size: 16px;
+      padding: 14px 18px;
+      border-top: 1px solid #f3ede6;
+      font-size: 15px;
+      color: #2d2416;
+      line-height: 1.4;
     }
 
     .rule:first-of-type { border-top: none; }
 
-    .rule-icon { font-size: 22px; width: 36px; flex-shrink: 0; }
-    .rule-text { flex: 1; line-height: 1.4; }
-    .rule-status { font-size: 20px; margin-left: 8px; }
+    .rule-icon   { font-size: 20px; width: 34px; flex-shrink: 0; }
+    .rule-text   { flex: 1; }
+    .rule-status { margin-left: 10px; font-size: 18px; }
 
-    .notes .note {
-      padding: 12px 16px;
-      border-top: 1px solid #f0f0f0;
+    .allowed { color: #4a7c5a; font-weight: 700; font-size: 14px; }
+    .blocked  { color: #a0522d; font-weight: 700; font-size: 14px; }
+
+    /* ── Notes ── */
+    .note {
+      padding: 12px 18px;
+      border-top: 1px solid #f3ede6;
       font-size: 14px;
-      color: #444;
-      line-height: 1.5;
+      color: #6b5d4e;
+      line-height: 1.55;
     }
-    .notes .note:first-of-type { border-top: none; }
+    .note:first-of-type { border-top: none; }
 
+    /* ── Material ── */
     .material-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1px;
-      background: #f0f0f0;
+      background: #f3ede6;
     }
     .material-cell {
       background: white;
-      padding: 12px 16px;
+      padding: 14px 18px;
     }
-    .material-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-    .material-value { font-size: 15px; font-weight: 600; margin-top: 2px; }
+    .material-label { font-size: 10px; color: #a89880; text-transform: uppercase; letter-spacing: 1.2px; }
+    .material-value { font-size: 15px; font-weight: 600; margin-top: 3px; color: #2d2416; }
 
+    /* ── Footer ── */
     .footer {
       text-align: center;
-      padding: 24px 16px;
+      padding: 28px 16px 36px;
       font-size: 12px;
-      color: #aaa;
+      color: #c4b8a8;
+      letter-spacing: 0.5px;
     }
+    .footer strong { color: #a89880; }
   </style>
 </head>
 <body>
 
 {% set level = item.alert_level | lower %}
-{% set icons = {'safe': '✅', 'caution': '⚠️', 'danger': '🚨'} %}
+{% set icons  = {'safe': '🌿', 'caution': '☀️', 'danger': '🚫'} %}
+{% set labels = {'safe': 'Easy Care', 'caution': 'Handle with Care', 'danger': 'Do Not Wash'} %}
 
 <div class="header {{ level }}">
+  <div class="wordmark">ThreadCare</div>
   <div class="alert-icon">{{ icons.get(level, '❓') }}</div>
-  <div class="alert-level">{{ level }}</div>
+  <div class="alert-badge">{{ labels.get(level, level | title) }}</div>
   <div class="item-name">{{ item.name or item.item_type }}</div>
   {% if item.brand %}<div class="item-brand">{{ item.brand }}</div>{% endif %}
   {% if item.alert_reason %}
@@ -113,7 +150,7 @@
   {% endif %}
 </div>
 
-<!-- Wash Instructions -->
+<!-- Washing -->
 <div class="card">
   <div class="card-title">Washing</div>
 
@@ -130,24 +167,36 @@
   <div class="rule">
     <div class="rule-icon">🧴</div>
     <div class="rule-text">Bleach</div>
-    <div class="rule-status">{{ '✅' if item.care.bleach else '❌' }}</div>
+    <div class="rule-status">
+      {% if item.care.bleach %}
+        <span class="allowed">OK</span>
+      {% else %}
+        <span class="blocked">No</span>
+      {% endif %}
+    </div>
   </div>
 
   <div class="rule">
     <div class="rule-icon">🧼</div>
     <div class="rule-text">Fabric softener</div>
-    <div class="rule-status">{{ '✅' if item.care.fabric_softener else '❌' }}</div>
+    <div class="rule-status">
+      {% if item.care.fabric_softener %}
+        <span class="allowed">OK</span>
+      {% else %}
+        <span class="blocked">No</span>
+      {% endif %}
+    </div>
   </div>
 </div>
 
-<!-- Drying Instructions -->
+<!-- Drying -->
 <div class="card">
   <div class="card-title">Drying</div>
 
   <div class="rule">
     <div class="rule-icon">🌀</div>
     <div class="rule-text">
-      How to dry:
+      How to dry:&nbsp;
       {% if item.care.tumble_dry and item.care.hang_dry %}
         <strong>Tumble dry{% if item.care.dry_temp %} — {{ item.care.dry_temp | title }} heat{% endif %} or hang dry</strong>
       {% elif item.care.tumble_dry %}
@@ -163,13 +212,25 @@
   <div class="rule">
     <div class="rule-icon">♨️</div>
     <div class="rule-text">Iron</div>
-    <div class="rule-status">{{ '✅' if item.care.iron else '❌' }}</div>
+    <div class="rule-status">
+      {% if item.care.iron %}
+        <span class="allowed">OK</span>
+      {% else %}
+        <span class="blocked">No</span>
+      {% endif %}
+    </div>
   </div>
 
   <div class="rule">
     <div class="rule-icon">👔</div>
     <div class="rule-text">Dry clean</div>
-    <div class="rule-status">{{ '✅' if item.care.dry_clean else '❌' }}</div>
+    <div class="rule-status">
+      {% if item.care.dry_clean %}
+        <span class="allowed">OK</span>
+      {% else %}
+        <span class="blocked">No</span>
+      {% endif %}
+    </div>
   </div>
 </div>
 
@@ -177,11 +238,9 @@
 {% if item.care.special_instructions %}
 <div class="card">
   <div class="card-title">Special Notes</div>
-  <div class="notes">
-    {% for note in item.care.special_instructions %}
-    <div class="note">• {{ note }}</div>
-    {% endfor %}
-  </div>
+  {% for note in item.care.special_instructions %}
+  <div class="note">· {{ note }}</div>
+  {% endfor %}
 </div>
 {% endif %}
 
@@ -219,7 +278,7 @@
 </div>
 {% endif %}
 
-<div class="footer">Item {{ item.item_id }}</div>
+<div class="footer"><strong>ThreadCare</strong> · {{ item.item_id }}</div>
 
 </body>
 </html>

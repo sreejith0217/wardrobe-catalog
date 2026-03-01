@@ -6,7 +6,7 @@ import anthropic
 from flask import Flask, render_template, abort, request, redirect
 
 from catalog import extract_care_data, generate_qr
-from db import load_db, save_item
+from db import load_db, save_item, delete_item
 
 app = Flask(__name__)
 
@@ -74,6 +74,12 @@ def care_page(item_id):
     if not item:
         abort(404)
     return render_template("item.html", item=item)
+
+
+@app.route("/item/<item_id>/delete", methods=["POST"])
+def delete_item_route(item_id):
+    delete_item(item_id.upper())
+    return redirect("/")
 
 
 @app.errorhandler(404)

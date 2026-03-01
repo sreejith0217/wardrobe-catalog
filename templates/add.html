@@ -3,85 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Item</title>
+  <title>Add Item — ThreadCare</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f5;
+      background: #faf7f4;
+      color: #2d2416;
       padding-bottom: 40px;
     }
 
     .header {
-      background: #1a1a1a;
+      background: #2d2416;
       color: white;
-      padding: 20px 16px;
+      padding: 20px 18px;
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .header a { color: white; text-decoration: none; font-size: 20px; }
+    .header a { color: white; text-decoration: none; font-size: 20px; opacity: 0.7; }
+    .header a:hover { opacity: 1; }
+    .header-text { flex: 1; }
+    .header-wordmark { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.5; margin-bottom: 2px; }
     .header h1 { font-size: 18px; font-weight: 600; }
 
     .card {
       background: white;
-      border-radius: 14px;
-      margin: 16px;
+      border-radius: 16px;
+      margin: 14px 16px;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(45,36,22,0.07);
     }
 
     .field {
-      padding: 16px;
-      border-top: 1px solid #f0f0f0;
+      padding: 16px 18px;
+      border-top: 1px solid #f3ede6;
     }
     .field:first-child { border-top: none; }
 
     label {
       display: block;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #888;
-      margin-bottom: 8px;
+      letter-spacing: 1.8px;
+      color: #a89880;
+      margin-bottom: 10px;
     }
 
     .required-badge {
-      background: #ff3b30;
+      background: #a0522d;
       color: white;
       font-size: 9px;
-      padding: 2px 5px;
+      padding: 2px 6px;
       border-radius: 4px;
       margin-left: 6px;
       vertical-align: middle;
+      letter-spacing: 0.5px;
     }
 
     .optional-badge {
-      background: #e0e0e0;
-      color: #888;
+      background: #f0ebe4;
+      color: #a89880;
       font-size: 9px;
-      padding: 2px 5px;
+      padding: 2px 6px;
       border-radius: 4px;
       margin-left: 6px;
       vertical-align: middle;
+      letter-spacing: 0.5px;
     }
 
     input[type="text"] {
       width: 100%;
-      border: 1.5px solid #e0e0e0;
+      border: 1.5px solid #e8e0d6;
       border-radius: 10px;
       padding: 12px 14px;
       font-size: 16px;
       outline: none;
+      background: #faf7f4;
+      color: #2d2416;
       transition: border-color 0.2s;
     }
-    input[type="text"]:focus { border-color: #007aff; }
+    input[type="text"]::placeholder { color: #c4b8a8; }
+    input[type="text"]:focus { border-color: #4a7c5a; background: white; }
 
-    .photo-input {
-      position: relative;
-    }
+    .photo-input { position: relative; }
 
     .photo-btn {
       display: flex;
@@ -89,17 +96,17 @@
       justify-content: center;
       gap: 10px;
       width: 100%;
-      padding: 14px;
-      border: 2px dashed #d0d0d0;
+      padding: 16px 14px;
+      border: 2px dashed #d8cfc4;
       border-radius: 12px;
-      background: #fafafa;
-      color: #555;
+      background: #faf7f4;
+      color: #8a7968;
       font-size: 15px;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .photo-btn:hover { border-color: #007aff; color: #007aff; background: #f0f6ff; }
-    .photo-btn .icon { font-size: 24px; }
+    .photo-btn:hover { border-color: #4a7c5a; color: #4a7c5a; background: #f2f7f3; }
+    .photo-btn .icon { font-size: 22px; }
 
     input[type="file"] {
       position: absolute;
@@ -121,26 +128,21 @@
       max-height: 200px;
       object-fit: cover;
     }
-    .preview-name {
-      font-size: 13px;
-      color: #007aff;
-      margin-top: 6px;
-    }
 
     .hint {
       font-size: 13px;
-      color: #aaa;
+      color: #c4b8a8;
       margin-top: 8px;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .error-box {
-      margin: 16px;
-      background: #fff0f0;
-      border: 1.5px solid #ffb3b3;
+      margin: 14px 16px;
+      background: #fdf2ee;
+      border: 1.5px solid #e8b49a;
       border-radius: 12px;
       padding: 14px 16px;
-      color: #c0392b;
+      color: #a0522d;
       font-size: 14px;
     }
 
@@ -148,8 +150,8 @@
       display: block;
       width: calc(100% - 32px);
       margin: 16px;
-      padding: 16px;
-      background: #1a1a1a;
+      padding: 17px;
+      background: #4a7c5a;
       color: white;
       border: none;
       border-radius: 14px;
@@ -157,8 +159,9 @@
       font-weight: 600;
       cursor: pointer;
       transition: opacity 0.2s;
+      letter-spacing: 0.3px;
     }
-    .submit-btn:hover { opacity: 0.85; }
+    .submit-btn:hover { opacity: 0.88; }
     .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* Loading overlay */
@@ -166,7 +169,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(45,36,22,0.75);
       z-index: 100;
       flex-direction: column;
       align-items: center;
@@ -177,24 +180,28 @@
     }
     .loading-overlay.active { display: flex; }
     .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid rgba(255,255,255,0.3);
+      width: 46px;
+      height: 46px;
+      border: 3px solid rgba(255,255,255,0.25);
       border-top-color: white;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin-bottom: 20px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-wordmark { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.5; margin-bottom: 16px; }
     .loading-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
-    .loading-sub { font-size: 14px; opacity: 0.7; }
+    .loading-sub { font-size: 14px; opacity: 0.6; line-height: 1.5; }
   </style>
 </head>
 <body>
 
 <div class="header">
   <a href="/">←</a>
-  <h1>Add New Item</h1>
+  <div class="header-text">
+    <div class="header-wordmark">ThreadCare</div>
+    <h1>Add New Item</h1>
+  </div>
 </div>
 
 {% if error %}
@@ -250,9 +257,9 @@
 
 </form>
 
-<!-- Loading overlay -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
+  <div class="loading-wordmark">ThreadCare</div>
   <div class="loading-title">Reading care label...</div>
   <div class="loading-sub">AI is extracting care instructions.<br>This takes about 10 seconds.</div>
 </div>
@@ -261,9 +268,7 @@
   function previewPhoto(input, previewId, btnTextId) {
     const file = input.files[0];
     if (!file) return;
-
     document.getElementById(btnTextId).textContent = file.name;
-
     const preview = document.getElementById(previewId);
     const img = preview.querySelector("img");
     const reader = new FileReader();
