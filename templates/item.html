@@ -15,28 +15,33 @@
 
     /* ── Header ── */
     .header {
-      padding: 32px 24px 28px;
-      text-align: center;
+      padding: 24px 20px 20px;
       color: white;
+      position: relative;
     }
-
     .header.safe    { background: #4a7c5a; }
     .header.caution { background: #b8860b; }
     .header.danger  { background: #a0522d; }
 
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
     .wordmark {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
       opacity: 0.7;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
-    .alert-icon { font-size: 44px; margin-bottom: 10px; }
-
     .alert-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 1.5px;
@@ -44,20 +49,105 @@
       background: rgba(255,255,255,0.2);
       border-radius: 20px;
       padding: 4px 12px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
-    .item-name  { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
-    .item-brand { font-size: 15px; opacity: 0.8; }
+    .header-body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .header-text { flex: 1; }
+    .item-name  { font-size: 22px; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
+    .item-brand { font-size: 14px; opacity: 0.8; }
+
+    .thumbnail {
+      width: 72px;
+      height: 72px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
 
     .alert-reason {
-      margin-top: 16px;
-      font-size: 15px;
+      margin-top: 12px;
+      font-size: 14px;
       line-height: 1.55;
       background: rgba(0,0,0,0.12);
       border-radius: 10px;
-      padding: 12px 16px;
-      text-align: left;
+      padding: 10px 14px;
+    }
+
+    /* ── Edit button ── */
+    .edit-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    /* ── Edit panel ── */
+    .edit-panel {
+      display: none;
+      background: white;
+      border-radius: 16px;
+      margin: 12px 16px 0;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(45,36,22,0.1);
+    }
+    .edit-panel.open { display: block; }
+
+    .edit-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .edit-row:last-child { margin-bottom: 0; }
+
+    .edit-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #a89880;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      width: 52px;
+      flex-shrink: 0;
+    }
+    .edit-row input[type="text"] {
+      flex: 1;
+      border: 1px solid #e8e0d6;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: #2d2416;
+    }
+    .edit-row input[type="file"] {
+      flex: 1;
+      font-size: 13px;
+      color: #6b5d4e;
+    }
+    .edit-row button {
+      background: #2d2416;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
     }
 
     /* ── Cards ── */
@@ -88,13 +178,10 @@
       color: #2d2416;
       line-height: 1.4;
     }
-
     .rule:first-of-type { border-top: none; }
-
     .rule-icon   { font-size: 20px; width: 34px; flex-shrink: 0; }
     .rule-text   { flex: 1; }
-    .rule-status { margin-left: 10px; font-size: 18px; }
-
+    .rule-status { margin-left: 10px; }
     .allowed { color: #4a7c5a; font-weight: 700; font-size: 14px; }
     .blocked  { color: #a0522d; font-weight: 700; font-size: 14px; }
 
@@ -115,10 +202,7 @@
       gap: 1px;
       background: #f3ede6;
     }
-    .material-cell {
-      background: white;
-      padding: 14px 18px;
-    }
+    .material-cell { background: white; padding: 14px 18px; }
     .material-label { font-size: 10px; color: #a89880; text-transform: uppercase; letter-spacing: 1.2px; }
     .material-value { font-size: 15px; font-weight: 600; margin-top: 3px; color: #2d2416; }
 
@@ -131,40 +215,6 @@
       letter-spacing: 0.5px;
     }
     .footer strong { color: #a89880; }
-
-    .garment-photo {
-      width: 100%;
-      max-height: 280px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .rename-form {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-      justify-content: center;
-    }
-    .rename-form input {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 14px;
-      color: white;
-      width: 180px;
-    }
-    .rename-form input::placeholder { color: rgba(255,255,255,0.6); }
-    .rename-form button {
-      background: rgba(255,255,255,0.25);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 14px;
-      color: white;
-      cursor: pointer;
-      font-weight: 600;
-    }
   </style>
 </head>
 <body>
@@ -173,30 +223,40 @@
 {% set icons  = {'safe': '🌿', 'caution': '☀️', 'danger': '🚫'} %}
 {% set labels = {'safe': 'Easy Care', 'caution': 'Handle with Care', 'danger': 'Do Not Wash'} %}
 
-{% if item.photo_url %}
-<img src="{{ item.photo_url }}" class="garment-photo" alt="{{ item.name or item.item_type }}">
-{% endif %}
-
 <div class="header {{ level }}">
   <div class="wordmark">ThreadCare</div>
-  <div class="alert-icon">{{ icons.get(level, '❓') }}</div>
-  <div class="alert-badge">{{ labels.get(level, level | title) }}</div>
-  <div class="item-name">{{ item.name or item.item_type }}</div>
-  {% if item.brand %}<div class="item-brand">{{ item.brand }}</div>{% endif %}
-  {% if admin %}
-  <form class="rename-form" method="POST" action="/item/{{ item.item_id }}/rename">
-    <input type="text" name="name" placeholder="Rename item…" value="{{ item.name or item.item_type }}">
-    <button type="submit">Save</button>
-  </form>
-  <form class="rename-form" method="POST" action="/item/{{ item.item_id }}/photo" enctype="multipart/form-data" style="margin-top:8px;">
-    <input type="file" name="photo" accept="image/*" style="color:white; font-size:13px;">
-    <button type="submit">Upload Photo</button>
-  </form>
-  {% endif %}
+  <div class="alert-badge">{{ icons.get(level, '❓') }} {{ labels.get(level, level | title) }}</div>
+  <div class="header-body">
+    <div class="header-text">
+      <div class="item-name">{{ item.name or item.item_type }}</div>
+      {% if item.brand %}<div class="item-brand">{{ item.brand }}</div>{% endif %}
+    </div>
+    {% if item.photo_url %}
+    <img src="{{ item.photo_url }}" class="thumbnail" alt="{{ item.name or item.item_type }}">
+    {% endif %}
+    {% if admin %}
+    <button class="edit-btn" onclick="document.getElementById('edit-panel').classList.toggle('open')">✏️</button>
+    {% endif %}
+  </div>
   {% if item.alert_reason %}
   <div class="alert-reason">{{ item.alert_reason }}</div>
   {% endif %}
 </div>
+
+{% if admin %}
+<div class="edit-panel" id="edit-panel">
+  <form class="edit-row" method="POST" action="/item/{{ item.item_id }}/rename">
+    <span class="edit-label">Name</span>
+    <input type="text" name="name" value="{{ item.name or item.item_type }}">
+    <button type="submit">Save</button>
+  </form>
+  <form class="edit-row" method="POST" action="/item/{{ item.item_id }}/photo" enctype="multipart/form-data">
+    <span class="edit-label">Photo</span>
+    <input type="file" name="photo" accept="image/*">
+    <button type="submit">Upload</button>
+  </form>
+</div>
+{% endif %}
 
 <!-- Washing -->
 <div class="card">
