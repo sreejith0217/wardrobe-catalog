@@ -188,6 +188,10 @@
     <input type="text" name="name" placeholder="Rename item…" value="{{ item.name or item.item_type }}">
     <button type="submit">Save</button>
   </form>
+  <form class="rename-form" method="POST" action="/item/{{ item.item_id }}/photo" enctype="multipart/form-data" style="margin-top:8px;">
+    <input type="file" name="photo" accept="image/*" style="color:white; font-size:13px;">
+    <button type="submit">Upload Photo</button>
+  </form>
   {% endif %}
   {% if item.alert_reason %}
   <div class="alert-reason">{{ item.alert_reason }}</div>

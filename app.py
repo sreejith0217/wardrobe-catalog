@@ -114,6 +114,31 @@ def care_page(item_id):
     return render_template("item.html", item=item, admin=is_admin())
 
 
+@app.route("/item/<item_id>/photo", methods=["POST"])
+def update_photo(item_id):
+    if not is_admin():
+        return redirect("/")
+    item_id = item_id.upper()
+    items = load_db()
+    item = items.get(item_id)
+    if not item:
+        abort(404)
+    photo_file = request.files.get("photo")
+    if photo_file and photo_file.filename:
+        img = Image.open(photo_file)
+        img = ImageOps.exif_transpose(img)
+        img = img.convert("RGB")
+        buf = io.BytesIO()
+        img.save(buf, format="JPEG", quality=85)
+        try:
+            photo_url = upload_photo(item_id, buf.getvalue())
+            item["photo_url"] = photo_url
+            save_item(item_id, item)
+        except Exception as e:
+            print(f"Photo upload failed: {e}")
+    return redirect(f"/item/{item_id}")
+
+
 @app.route("/item/<item_id>/rename", methods=["POST"])
 def rename_item(item_id):
     if not is_admin():
