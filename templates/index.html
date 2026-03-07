@@ -131,6 +131,28 @@
       transition: opacity 0.2s;
     }
     .fab:hover { opacity: 0.88; }
+
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2d2416;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-size: 14px;
+      text-align: center;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      animation: fadeout 4s forwards;
+      z-index: 999;
+    }
+    @keyframes fadeout {
+      0%   { opacity: 1; }
+      70%  { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
   </style>
 </head>
 <body>
@@ -170,6 +192,12 @@
     </div>
   {% endif %}
 </div>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="toast">{{ messages[0] }}</div>
+  {% endif %}
+{% endwith %}
 
 <a href="/add" class="fab">
   <span>+</span> Add Item

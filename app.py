@@ -3,7 +3,7 @@ import tempfile
 import uuid
 
 import anthropic
-from flask import Flask, render_template, abort, request, redirect, session
+from flask import Flask, render_template, abort, request, redirect, session, flash
 
 from catalog import extract_care_data, generate_qr
 from db import load_db, save_item, delete_item
@@ -30,6 +30,7 @@ def add_item():
         if key and key == admin_key:
             session["admin"] = True
         if not is_admin():
+            flash("This is a live demo — adding items is restricted to the owner.")
             return redirect("/")
         return render_template("add.html")
 
