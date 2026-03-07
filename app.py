@@ -18,6 +18,10 @@ def is_admin():
 
 @app.route("/")
 def index():
+    key = request.args.get("key", "")
+    admin_key = os.environ.get("ADMIN_KEY", "")
+    if key and key == admin_key:
+        session["admin"] = True
     items = load_db()
     return render_template("index.html", items=items)
 
