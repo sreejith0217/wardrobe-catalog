@@ -132,6 +132,13 @@
     }
     .footer strong { color: #a89880; }
 
+    .garment-photo {
+      width: 100%;
+      max-height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
     .rename-form {
       display: flex;
       gap: 8px;
@@ -165,6 +172,10 @@
 {% set level = item.alert_level | lower %}
 {% set icons  = {'safe': '🌿', 'caution': '☀️', 'danger': '🚫'} %}
 {% set labels = {'safe': 'Easy Care', 'caution': 'Handle with Care', 'danger': 'Do Not Wash'} %}
+
+{% if item.photo_url %}
+<img src="{{ item.photo_url }}" class="garment-photo" alt="{{ item.name or item.item_type }}">
+{% endif %}
 
 <div class="header {{ level }}">
   <div class="wordmark">ThreadCare</div>

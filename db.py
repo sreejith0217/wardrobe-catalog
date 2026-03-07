@@ -24,3 +24,12 @@ def save_item(item_id, item_data):
 def delete_item(item_id):
     client = get_client()
     client.table("items").delete().eq("item_id", item_id).execute()
+
+
+def upload_photo(item_id, image_bytes):
+    client = get_client()
+    path = f"{item_id}.jpg"
+    client.storage.from_("garment-photos").upload(
+        path, image_bytes, {"content-type": "image/jpeg", "upsert": "true"}
+    )
+    return client.storage.from_("garment-photos").get_public_url(path)

@@ -1,12 +1,14 @@
+import io
 import os
 import tempfile
 import uuid
 
 import anthropic
 from flask import Flask, render_template, abort, request, redirect, session, flash
+from PIL import Image, ImageOps
 
 from catalog import extract_care_data, generate_qr
-from db import load_db, save_item, delete_item
+from db import load_db, save_item, delete_item, upload_photo
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
@@ -68,10 +70,27 @@ def add_item():
             client = anthropic.Anthropic(api_key=api_key)
             care_data = extract_care_data(client, label_path, garment_path)
 
+            # Auto-rotate and store garment photo bytes before tmpdir is cleaned up
+            garment_bytes = None
+            if garment_file and garment_file.filename:
+                img = Image.open(garment_path)
+                img = ImageOps.exif_transpose(img)
+                img = img.convert("RGB")
+                buf = io.BytesIO()
+                img.save(buf, format="JPEG", quality=85)
+                garment_bytes = buf.getvalue()
+
         item_id = f"ITEM{str(uuid.uuid4())[:6].upper()}"
         care_data["item_id"] = item_id
         if item_name:
             care_data["name"] = item_name
+
+        if garment_bytes:
+            try:
+                photo_url = upload_photo(item_id, garment_bytes)
+                care_data["photo_url"] = photo_url
+            except Exception as e:
+                print(f"Photo upload failed: {e}")
 
         save_item(item_id, care_data)
         try:
