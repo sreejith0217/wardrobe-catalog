@@ -3,12 +3,17 @@ import tempfile
 import uuid
 
 import anthropic
-from flask import Flask, render_template, abort, request, redirect
+from flask import Flask, render_template, abort, request, redirect, session
 
 from catalog import extract_care_data, generate_qr
 from db import load_db, save_item, delete_item
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
+
+
+def is_admin():
+    return session.get("admin") is True
 
 
 @app.route("/")
@@ -20,7 +25,16 @@ def index():
 @app.route("/add", methods=["GET", "POST"])
 def add_item():
     if request.method == "GET":
+        key = request.args.get("key", "")
+        admin_key = os.environ.get("ADMIN_KEY", "")
+        if key and key == admin_key:
+            session["admin"] = True
+        if not is_admin():
+            return redirect("/")
         return render_template("add.html")
+
+    if not is_admin():
+        return redirect("/")
 
     label_file = request.files.get("label_photo")
     garment_file = request.files.get("garment_photo")
@@ -78,6 +92,8 @@ def care_page(item_id):
 
 @app.route("/item/<item_id>/delete", methods=["POST"])
 def delete_item_route(item_id):
+    if not is_admin():
+        return redirect("/")
     delete_item(item_id.upper())
     return redirect("/")
 
