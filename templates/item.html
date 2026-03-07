@@ -131,6 +131,33 @@
       letter-spacing: 0.5px;
     }
     .footer strong { color: #a89880; }
+
+    .rename-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+    .rename-form input {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 14px;
+      color: white;
+      width: 180px;
+    }
+    .rename-form input::placeholder { color: rgba(255,255,255,0.6); }
+    .rename-form button {
+      background: rgba(255,255,255,0.25);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 14px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -145,6 +172,12 @@
   <div class="alert-badge">{{ labels.get(level, level | title) }}</div>
   <div class="item-name">{{ item.name or item.item_type }}</div>
   {% if item.brand %}<div class="item-brand">{{ item.brand }}</div>{% endif %}
+  {% if admin %}
+  <form class="rename-form" method="POST" action="/item/{{ item.item_id }}/rename">
+    <input type="text" name="name" placeholder="Rename item…" value="{{ item.name or item.item_type }}">
+    <button type="submit">Save</button>
+  </form>
+  {% endif %}
   {% if item.alert_reason %}
   <div class="alert-reason">{{ item.alert_reason }}</div>
   {% endif %}

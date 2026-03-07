@@ -88,7 +88,23 @@ def care_page(item_id):
     item = items.get(item_id.upper())
     if not item:
         abort(404)
-    return render_template("item.html", item=item)
+    return render_template("item.html", item=item, admin=is_admin())
+
+
+@app.route("/item/<item_id>/rename", methods=["POST"])
+def rename_item(item_id):
+    if not is_admin():
+        return redirect("/")
+    item_id = item_id.upper()
+    items = load_db()
+    item = items.get(item_id)
+    if not item:
+        abort(404)
+    new_name = request.form.get("name", "").strip()
+    if new_name:
+        item["name"] = new_name
+        save_item(item_id, item)
+    return redirect(f"/item/{item_id}")
 
 
 @app.route("/item/<item_id>/delete", methods=["POST"])
