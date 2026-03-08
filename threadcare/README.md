@@ -113,3 +113,7 @@ railway variables set SUPABASE_KEY=xxx
 ## Built By
 
 [Sreejith Jayan](https://www.linkedin.com/in/sreejithjayan/) — Senior Product Operations Manager at LinkedIn, learning to build AI-powered tools.
+
+---
+
+*Part of my [AI apps portfolio](https://github.com/sreejith0217)*

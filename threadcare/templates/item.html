@@ -31,7 +31,8 @@
       align-items: center;
       margin-bottom: 16px;
     }
-    .wordmark { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.6; }
+    .wordmark { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.6; text-decoration: none; color: white; display: flex; align-items: center; gap: 6px; }
+    .wordmark:hover { opacity: 0.9; }
     .alert-badge {
       font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
       background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px;
@@ -75,16 +76,32 @@
     /* ── Admin edit panel ── */
     .edit-panel {
       display: none; background: white; margin: 0 16px 4px;
-      border-radius: 14px; padding: 14px 16px;
+      border-radius: 14px; padding: 18px 16px;
       box-shadow: 0 1px 3px rgba(45,36,22,0.1);
     }
     .edit-panel.open { display: block; }
-    .edit-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-    .edit-row:last-child { margin-bottom: 0; }
-    .edit-label { font-size: 11px; font-weight: 600; color: #a89880; text-transform: uppercase; letter-spacing: 1px; width: 48px; flex-shrink: 0; }
-    .edit-row input[type="text"] { flex: 1; border: 1px solid #e8e0d6; border-radius: 8px; padding: 8px 10px; font-size: 14px; color: #2d2416; }
-    .edit-row input[type="file"] { flex: 1; font-size: 12px; color: #6b5d4e; }
-    .edit-row button { background: #2d2416; color: white; border: none; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .edit-section { margin-bottom: 0; }
+    .edit-section-label { font-size: 10px; font-weight: 700; color: #a89880; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .edit-section input[type="text"] {
+      display: block; width: 100%; border: 1.5px solid #e8e0d6; border-radius: 10px;
+      padding: 11px 13px; font-size: 15px; color: #2d2416; margin-bottom: 8px;
+      outline: none; background: #faf7f4; font-family: inherit;
+    }
+    .edit-section input[type="text"]:focus { border-color: #4a7c5a; background: white; }
+    .edit-section-btn {
+      display: block; width: 100%; background: #2d2416; color: white;
+      border: none; border-radius: 10px; padding: 13px; font-size: 14px;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+    }
+    .edit-divider { border: none; border-top: 1px solid #f0ebe4; margin: 18px 0; }
+    #photoInput { display: none; }
+    .photo-pick-btn {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      padding: 13px; border: 2px dashed #d8cfc4; border-radius: 10px;
+      background: #faf7f4; color: #8a7968; font-size: 14px; cursor: pointer;
+      margin-bottom: 8px; box-sizing: border-box;
+    }
+    .photo-pick-btn.selected { border-color: #4a7c5a; border-style: solid; color: #2d2416; }
 
     /* ── Core content ── */
     .core {
@@ -186,7 +203,7 @@
 
 <div class="hero {{ level }}">
   <div class="hero-top">
-    <div class="wordmark">ThreadCare</div>
+    <a href="/" class="wordmark">← ThreadCare</a>
     <div class="alert-badge">{{ icons.get(level, '❓') }} {{ labels.get(level, level | title) }}</div>
   </div>
   <div class="hero-body">
@@ -209,16 +226,24 @@
 
 {% if admin %}
 <div class="edit-panel" id="edit-panel">
-  <form class="edit-row" method="POST" action="/item/{{ item.item_id }}/rename">
-    <span class="edit-label">Name</span>
-    <input type="text" name="name" value="{{ item.name or item.item_type }}">
-    <button type="submit">Save</button>
-  </form>
-  <form class="edit-row" id="photoForm" action="/item/{{ item.item_id }}/photo">
-    <span class="edit-label">Photo</span>
-    <input type="file" name="photo" accept="image/*" id="photoInput">
-    <button type="submit">Upload</button>
-  </form>
+  <div class="edit-section">
+    <div class="edit-section-label">Name</div>
+    <form method="POST" action="/item/{{ item.item_id }}/rename">
+      <input type="text" name="name" value="{{ item.name or item.item_type }}">
+      <button type="submit" class="edit-section-btn">Save Name</button>
+    </form>
+  </div>
+  <hr class="edit-divider">
+  <div class="edit-section">
+    <div class="edit-section-label">Photo</div>
+    <form id="photoForm" action="/item/{{ item.item_id }}/photo">
+      <input type="file" name="photo" accept="image/*" id="photoInput">
+      <label for="photoInput" class="photo-pick-btn" id="photoPickBtn">
+        <span>📷</span><span id="photoPickText">Choose photo</span>
+      </label>
+      <button type="submit" class="edit-section-btn">Update Photo</button>
+    </form>
+  </div>
 </div>
 {% endif %}
 
@@ -319,21 +344,36 @@
 <div class="footer"><strong>ThreadCare</strong> · {{ item.item_id }}</div>
 
 <script>
-  // Compress + auto-rotate photo before uploading from edit panel
+  // Compress + auto-rotate using <img> element — respects EXIF orientation reliably
   async function compressImage(file) {
-    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
-    const MAX = 1920;
-    let w = bitmap.width, h = bitmap.height;
-    if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
-    const canvas = document.createElement("canvas");
-    canvas.width = w; canvas.height = h;
-    canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
-    bitmap.close();
-    return new Promise(resolve =>
-      canvas.toBlob(blob =>
-        resolve(new File([blob], "photo.jpg", { type: "image/jpeg" })),
-        "image/jpeg", 0.80)
-    );
+    return new Promise((resolve) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 1920;
+        let w = img.naturalWidth, h = img.naturalHeight;
+        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(
+          blob => resolve(new File([blob], "photo.jpg", { type: "image/jpeg" })),
+          "image/jpeg", 0.80
+        );
+      };
+      img.src = url;
+    });
+  }
+
+  const photoInput = document.getElementById("photoInput");
+  if (photoInput) {
+    photoInput.addEventListener("change", function() {
+      if (this.files[0]) {
+        document.getElementById("photoPickText").textContent = this.files[0].name;
+        document.getElementById("photoPickBtn").classList.add("selected");
+      }
+    });
   }
 
   const photoForm = document.getElementById("photoForm");

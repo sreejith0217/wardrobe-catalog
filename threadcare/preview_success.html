@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Added — ThreadCare</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #faf7f4;
+      color: #2d2416;
+      padding-bottom: 40px;
+      max-width: 430px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: #2d2416;
+      color: white;
+      padding: 24px 18px 20px;
+    }
+    .header-wordmark {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 14px;
+    }
+    .header-check { font-size: 28px; margin-bottom: 6px; }
+    .header-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .header-sub { font-size: 14px; opacity: 0.6; }
+
+    .alert-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 5px 12px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: #a89880;
+      padding: 20px 18px 10px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      margin: 0 16px 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(45,36,22,0.07);
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px;
+      border-top: 1px solid #f3ede6;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+    .option:first-child { border-top: none; }
+    .option:active { background: #f8f4f0; }
+
+    .option-icon { font-size: 26px; flex-shrink: 0; margin-top: 1px; }
+    .option-body { flex: 1; }
+    .option-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #2d2416; }
+    .option-desc { font-size: 13px; color: #8a7968; line-height: 1.5; }
+    .option-arrow { font-size: 18px; color: #c4b8a8; align-self: center; flex-shrink: 0; }
+
+    .view-btn {
+      display: block;
+      width: calc(100% - 32px);
+      margin: 4px 16px 0;
+      padding: 16px;
+      background: transparent;
+      color: #4a7c5a;
+      border: 2px solid #4a7c5a;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .view-btn:hover { background: #4a7c5a; color: white; }
+
+    .nfc-panel {
+      display: none;
+      margin: 0 16px 14px;
+      background: #f2f7f3;
+      border: 1.5px solid #b8d4bf;
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .nfc-panel.open { display: block; }
+    .nfc-panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #4a7c5a;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .nfc-url-box {
+      background: white;
+      border: 1px solid #d0e8d8;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      font-family: monospace;
+      color: #2d2416;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+    .copy-btn {
+      display: inline-block;
+      background: #4a7c5a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .nfc-steps { font-size: 13px; color: #4a6650; line-height: 1.7; }
+    .nfc-steps ol { padding-left: 18px; }
+    .nfc-steps li { margin-bottom: 2px; }
+
+    .save-panel {
+      display: none;
+      margin: 0 16px 14px;
+      background: #f2f7f3;
+      border: 1.5px solid #b8d4bf;
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .save-panel.open { display: block; }
+    .save-panel-title { font-size: 13px; font-weight: 700; color: #4a7c5a; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .save-steps { font-size: 13px; color: #4a6650; line-height: 1.7; }
+    .save-steps ol { padding-left: 18px; }
+    .save-steps li { margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-wordmark">ThreadCare</div>
+  <div class="header-check">✓</div>
+  <div class="header-title">Grey Everlane Sweater added</div>
+  <div class="header-sub">Care instructions saved</div>
+  <div class="alert-pill">🚫 Do Not Wash</div>
+</div>
+
+<div class="section-label">How do you want to access this at laundry time?</div>
+
+<div class="card">
+
+  <div class="option" onclick="toggleSave()">
+    <div class="option-icon">📱</div>
+    <div class="option-body">
+      <div class="option-title">Save to phone</div>
+      <div class="option-desc">Bookmark the care page or add it to your home screen for quick access — no hardware needed.</div>
+    </div>
+    <div class="option-arrow" id="saveArrow">›</div>
+  </div>
+
+  <div class="option" onclick="toggleNfc()">
+    <div class="option-icon">📡</div>
+    <div class="option-body">
+      <div class="option-title">Set up NFC tag</div>
+      <div class="option-desc">Stick a washable tag on the garment. One tap = instant care instructions, no searching needed.</div>
+    </div>
+    <div class="option-arrow" id="nfcArrow">›</div>
+  </div>
+
+</div>
+
+<div class="save-panel" id="savePanel">
+  <div class="save-panel-title">Add to Home Screen</div>
+  <div class="save-steps">
+    <ol>
+      <li>Open the care page in Safari</li>
+      <li>Tap the <strong>Share</strong> button (box with arrow)</li>
+      <li>Scroll down and tap <strong>Add to Home Screen</strong></li>
+      <li>Tap <strong>Add</strong> — it appears like an app on your home screen</li>
+    </ol>
+  </div>
+</div>
+
+<div class="nfc-panel" id="nfcPanel">
+  <div class="nfc-panel-title">Write this URL to your NFC tag</div>
+  <div class="nfc-url-box" id="itemUrl">https://wardrobe-catalog-production.up.railway.app/item/ITEMABC123</div>
+  <button class="copy-btn" onclick="copyUrl()">Copy URL</button>
+  <div class="nfc-steps">
+    <ol>
+      <li>Download <strong>NFC Tools</strong> (free on iOS &amp; Android)</li>
+      <li>Open app → Write → Add a record → URL</li>
+      <li>Paste the URL above</li>
+      <li>Tap your phone to a blank NFC tag</li>
+      <li>Stick the tag inside the garment</li>
+    </ol>
+  </div>
+</div>
+
+<a href="https://wardrobe-catalog-production.up.railway.app/item/ITEMABC123" target="_blank" class="view-btn">View care page →</a>
+
+<script>
+  function toggleSave() {
+    const panel = document.getElementById("savePanel");
+    const arrow = document.getElementById("saveArrow");
+    const open = panel.classList.toggle("open");
+    arrow.textContent = open ? "↓" : "›";
+    if (open) {
+      document.getElementById("nfcPanel").classList.remove("open");
+      document.getElementById("nfcArrow").textContent = "›";
+    }
+  }
+
+  function toggleNfc() {
+    const panel = document.getElementById("nfcPanel");
+    const arrow = document.getElementById("nfcArrow");
+    const open = panel.classList.toggle("open");
+    arrow.textContent = open ? "↓" : "›";
+    if (open) {
+      document.getElementById("savePanel").classList.remove("open");
+      document.getElementById("saveArrow").textContent = "›";
+    }
+  }
+
+  function copyUrl() {
+    const url = document.getElementById("itemUrl").textContent.trim();
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.querySelector(".copy-btn");
+      btn.textContent = "Copied!";
+      setTimeout(() => btn.textContent = "Copy URL", 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
