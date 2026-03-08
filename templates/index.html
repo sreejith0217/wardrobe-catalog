@@ -59,6 +59,14 @@
       flex-shrink: 0;
     }
 
+    .thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
     .item-info { flex: 1; min-width: 0; }
     .item-name {
       font-size: 16px;
@@ -171,7 +179,11 @@
     {% set labels = {'safe': 'Easy Care', 'caution': 'Caution', 'danger': 'Do Not Wash'} %}
     <div class="item">
       <a href="/item/{{ id }}" style="display:flex; align-items:center; gap:14px; flex:1; text-decoration:none; color:inherit; min-width:0;">
+        {% if item.photo_url %}
+        <img src="{{ item.photo_url }}" class="thumb" alt="{{ item.name or item.item_type }}">
+        {% else %}
         <div class="badge">{{ icons.get(level, '❓') }}</div>
+        {% endif %}
         <div class="item-info">
           <div class="item-name">{{ item.name or item.item_type }}</div>
           <div class="item-meta">{{ item.brand or 'Unknown brand' }}{% if item.color %} · {{ item.color }}{% endif %}</div>
