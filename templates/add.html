@@ -221,7 +221,7 @@
       <label>Care Label Photo <span class="required-badge">required</span></label>
       <div class="photo-input">
         <input type="file" name="label_photo" accept="image/*" id="labelInput">
-        <label class="photo-btn" for="labelInput" id="labelBtn">
+        <label class="photo-btn" for="labelInput" id="labelInputBtn">
           <span class="icon">🏷️</span>
           <span id="labelBtnText">Add photo</span>
         </label>
@@ -236,7 +236,7 @@
       <label>Garment Photo <span class="optional-badge">optional</span></label>
       <div class="photo-input">
         <input type="file" name="garment_photo" accept="image/*" id="garmentInput">
-        <label class="photo-btn" for="garmentInput" id="garmentBtn">
+        <label class="photo-btn" for="garmentInput" id="garmentInputBtn">
           <span class="icon">👕</span>
           <span id="garmentBtnText">Add photo</span>
         </label>
@@ -263,38 +263,69 @@
 </div>
 
 <script>
-  function previewPhoto(input, previewId, btnTextId) {
-    const file = input.files[0];
-    if (!file) return;
+  // Compress image to JPEG, max 1920px wide, 80% quality (~0.5-1MB)
+  function compressImage(file) {
+    return new Promise(resolve => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const MAX = 1920;
+        let w = img.width, h = img.height;
+        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        const canvas = document.createElement("canvas");
+        canvas.width = w; canvas.height = h;
+        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        canvas.toBlob(blob => {
+          resolve(new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" }));
+        }, "image/jpeg", 0.80);
+      };
+      img.src = url;
+    });
+  }
+
+  function previewPhoto(file, previewId, btnTextId, btnId) {
     document.getElementById(btnTextId).textContent = file.name;
-    document.getElementById(input.id + "Btn").classList.add("selected");
+    document.getElementById(btnId).classList.add("selected");
     const preview = document.getElementById(previewId);
     const img = preview.querySelector("img");
     const reader = new FileReader();
-    reader.onload = e => {
-      img.src = e.target.result;
-      preview.style.display = "block";
-    };
+    reader.onload = e => { img.src = e.target.result; preview.style.display = "block"; };
     reader.readAsDataURL(file);
   }
 
   document.getElementById("labelInput").addEventListener("change", function() {
-    previewPhoto(this, "labelPreview", "labelBtnText");
+    if (this.files[0]) previewPhoto(this.files[0], "labelPreview", "labelBtnText", "labelInputBtn");
   });
 
   document.getElementById("garmentInput").addEventListener("change", function() {
-    previewPhoto(this, "garmentPreview", "garmentBtnText");
+    if (this.files[0]) previewPhoto(this.files[0], "garmentPreview", "garmentBtnText", "garmentInputBtn");
   });
 
-  document.getElementById("addForm").addEventListener("submit", function(e) {
+  document.getElementById("addForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
     const labelInput = document.getElementById("labelInput");
     if (!labelInput.files.length) {
-      e.preventDefault();
-      alert("Please take a photo of the care label first.");
+      alert("Please add a photo of the care label first.");
       return;
     }
+
     document.getElementById("submitBtn").disabled = true;
     document.getElementById("loadingOverlay").classList.add("active");
+
+    // Compress images before uploading
+    const formData = new FormData(this);
+    formData.delete("label_photo");
+    formData.delete("garment_photo");
+    formData.append("label_photo", await compressImage(labelInput.files[0]));
+    const garmentInput = document.getElementById("garmentInput");
+    if (garmentInput.files.length) {
+      formData.append("garment_photo", await compressImage(garmentInput.files[0]));
+    }
+
+    const response = await fetch("/add", { method: "POST", body: formData });
+    // Follow redirect
+    window.location.href = response.url;
   });
 </script>
 
