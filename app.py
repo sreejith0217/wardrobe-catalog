@@ -12,6 +12,7 @@ from db import load_db, save_item, delete_item, upload_photo
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
+app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20MB
 
 
 def is_admin():
