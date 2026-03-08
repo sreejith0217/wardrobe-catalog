@@ -223,6 +223,21 @@
     .material-label { font-size: 10px; color: #a89880; text-transform: uppercase; letter-spacing: 1.2px; }
     .material-value { font-size: 15px; font-weight: 600; margin-top: 3px; color: #2d2416; }
 
+    /* ── Share banner ── */
+    .share-banner {
+      background: #f2f7f3;
+      border-bottom: 1.5px solid #b8d4bf;
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .share-banner-icon { font-size: 22px; flex-shrink: 0; }
+    .share-banner-body { flex: 1; }
+    .share-banner-title { font-size: 14px; font-weight: 600; color: #2d2416; margin-bottom: 2px; }
+    .share-banner-sub { font-size: 13px; color: #4a6650; line-height: 1.5; }
+    .share-banner-close { font-size: 18px; color: #a89880; cursor: pointer; flex-shrink: 0; padding: 0 2px; }
+
     /* ── Footer ── */
     .footer {
       text-align: center;
@@ -239,6 +254,17 @@
 {% set level = item.alert_level | lower %}
 {% set icons  = {'safe': '🌿', 'caution': '☀️', 'danger': '🚫'} %}
 {% set labels = {'safe': 'Easy Care', 'caution': 'Handle with Care', 'danger': 'Do Not Wash'} %}
+
+{% if request.args.get('share') %}
+<div class="share-banner" id="shareBanner">
+  <div class="share-banner-icon">📱</div>
+  <div class="share-banner-body">
+    <div class="share-banner-title">Add to Home Screen</div>
+    <div class="share-banner-sub">Tap <strong>Share →</strong> then <strong>Add to Home Screen</strong> for one-tap access from your phone.</div>
+  </div>
+  <div class="share-banner-close" onclick="document.getElementById('shareBanner').remove()">✕</div>
+</div>
+{% endif %}
 
 <div class="header {{ level }}">
   <div class="wordmark">ThreadCare</div>

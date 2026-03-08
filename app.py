@@ -98,11 +98,20 @@ def add_item():
         except Exception:
             pass  # QR generation is local-only, not needed on server
 
-        return redirect(f"/item/{item_id}")
+        return redirect(f"/item/{item_id}/success")
 
     except Exception as e:
         print(f"ERROR: {e}")
         return render_template("add.html", error=f"Something went wrong: {str(e)}")
+
+
+@app.route("/item/<item_id>/success")
+def success_page(item_id):
+    items = load_db()
+    item = items.get(item_id.upper())
+    if not item:
+        abort(404)
+    return render_template("success.html", item=item)
 
 
 @app.route("/item/<item_id>")
