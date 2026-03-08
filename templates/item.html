@@ -214,9 +214,9 @@
     <input type="text" name="name" value="{{ item.name or item.item_type }}">
     <button type="submit">Save</button>
   </form>
-  <form class="edit-row" method="POST" action="/item/{{ item.item_id }}/photo" enctype="multipart/form-data">
+  <form class="edit-row" id="photoForm" action="/item/{{ item.item_id }}/photo">
     <span class="edit-label">Photo</span>
-    <input type="file" name="photo" accept="image/*">
+    <input type="file" name="photo" accept="image/*" id="photoInput">
     <button type="submit">Upload</button>
   </form>
 </div>
@@ -319,6 +319,37 @@
 <div class="footer"><strong>ThreadCare</strong> · {{ item.item_id }}</div>
 
 <script>
+  // Compress + auto-rotate photo before uploading from edit panel
+  async function compressImage(file) {
+    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+    const MAX = 1920;
+    let w = bitmap.width, h = bitmap.height;
+    if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+    const canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    canvas.getContext("2d").drawImage(bitmap, 0, 0, w, h);
+    bitmap.close();
+    return new Promise(resolve =>
+      canvas.toBlob(blob =>
+        resolve(new File([blob], "photo.jpg", { type: "image/jpeg" })),
+        "image/jpeg", 0.80)
+    );
+  }
+
+  const photoForm = document.getElementById("photoForm");
+  if (photoForm) {
+    photoForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const input = document.getElementById("photoInput");
+      if (!input.files.length) return;
+      const compressed = await compressImage(input.files[0]);
+      const fd = new FormData();
+      fd.append("photo", compressed);
+      await fetch(this.action, { method: "POST", body: fd });
+      window.location.reload();
+    });
+  }
+
   function toggleDetails() {
     const panel = document.getElementById("detailsPanel");
     const toggle = document.getElementById("detailsToggle");
