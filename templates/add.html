@@ -206,7 +206,7 @@
     <div class="field">
       <label>Care Label Photo <span class="required-badge">required</span></label>
       <div class="photo-input">
-        <input type="file" name="label_photo"
+        <input type="file" name="label_photo" accept="image/*"
                id="labelInput" onchange="previewPhoto(this, 'labelPreview', 'labelBtnText')">
       </div>
       <div class="preview" id="labelPreview">
@@ -218,7 +218,7 @@
     <div class="field">
       <label>Garment Photo <span class="optional-badge">optional</span></label>
       <div class="photo-input">
-        <input type="file" name="garment_photo"
+        <input type="file" name="garment_photo" accept="image/*"
                id="garmentInput" onchange="previewPhoto(this, 'garmentPreview', 'garmentBtnText')">
       </div>
       <div class="preview" id="garmentPreview">
