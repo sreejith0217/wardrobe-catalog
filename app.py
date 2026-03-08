@@ -2,6 +2,7 @@ import io
 import os
 import tempfile
 import uuid
+from datetime import timedelta
 
 import anthropic
 from flask import Flask, render_template, abort, request, redirect, session, flash
@@ -13,10 +14,20 @@ from db import load_db, save_item, delete_item, upload_photo
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20MB
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
 
 
 def is_admin():
     return session.get("admin") is True
+
+
+@app.before_request
+def check_admin_key():
+    key = request.args.get("key", "")
+    admin_key = os.environ.get("ADMIN_KEY", "")
+    if key and key == admin_key:
+        session.permanent = True
+        session["admin"] = True
 
 
 @app.route("/")
@@ -26,7 +37,7 @@ def index():
     if key and key == admin_key:
         session["admin"] = True
     items = load_db()
-    return render_template("index.html", items=items)
+    return render_template("index.html", items=items, admin=is_admin())
 
 
 @app.route("/add", methods=["GET", "POST"])

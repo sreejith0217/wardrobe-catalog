@@ -11,241 +11,159 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #faf7f4;
       color: #2d2416;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* ── Header ── */
-    .header {
-      padding: 24px 20px 20px;
+    /* ── Hero ── */
+    .hero {
+      padding: 20px 18px 22px;
       color: white;
-      position: relative;
     }
-    .header.safe    { background: #4a7c5a; }
-    .header.caution { background: #b8860b; }
-    .header.danger  { background: #a0522d; }
+    .hero.safe    { background: #4a7c5a; }
+    .hero.caution { background: #b8860b; }
+    .hero.danger  { background: #a0522d; }
 
-    .header-top {
+    .hero-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
+      margin-bottom: 16px;
     }
-
-    .wordmark {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      opacity: 0.7;
-      margin-bottom: 12px;
-    }
-
+    .wordmark { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: 0.6; }
     .alert-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      background: rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 4px 12px;
-      margin-bottom: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px;
     }
 
-    .header-body {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+    .hero-body { display: flex; align-items: center; gap: 14px; }
 
-    .thumbnail-wrap {
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .thumbnail {
-      width: 72px;
-      height: 72px;
-      border-radius: 12px;
-      object-fit: cover;
-      display: block;
+    .thumb-wrap { position: relative; flex-shrink: 0; }
+    .thumb {
+      width: 64px; height: 64px; border-radius: 12px; object-fit: cover;
       border: 2px solid rgba(255,255,255,0.3);
     }
-
-    .thumbnail-placeholder {
-      width: 72px;
-      height: 72px;
-      border-radius: 12px;
+    .thumb-placeholder {
+      width: 64px; height: 64px; border-radius: 12px;
       background: rgba(255,255,255,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
+      display: flex; align-items: center; justify-content: center; font-size: 26px;
     }
-
-    /* ── Edit button ── */
     .edit-btn {
-      position: absolute;
-      bottom: -6px;
-      right: -6px;
-      background: white;
-      border: none;
-      border-radius: 50%;
-      width: 26px;
-      height: 26px;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; bottom: -5px; right: -5px;
+      background: white; border: none; border-radius: 50%;
+      width: 24px; height: 24px; font-size: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 1px 4px rgba(0,0,0,0.2);
     }
 
-    .header-text { flex: 1; }
-    .item-name  { font-size: 22px; font-weight: 700; margin-bottom: 3px; line-height: 1.2; }
-    .item-brand { font-size: 14px; opacity: 0.8; }
-
-    .alert-reason {
-      margin-top: 12px;
-      font-size: 14px;
-      line-height: 1.55;
-      background: rgba(0,0,0,0.12);
-      border-radius: 10px;
-      padding: 10px 14px;
-    }
-
-    /* ── Edit panel ── */
-    .edit-panel {
-      display: none;
-      background: white;
-      border-radius: 16px;
-      margin: 12px 16px 0;
-      padding: 16px;
-      box-shadow: 0 1px 3px rgba(45,36,22,0.1);
-    }
-    .edit-panel.open { display: block; }
-
-    .edit-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .edit-row:last-child { margin-bottom: 0; }
-
-    .edit-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #a89880;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      width: 52px;
-      flex-shrink: 0;
-    }
-    .edit-row input[type="text"] {
-      flex: 1;
-      border: 1px solid #e8e0d6;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 14px;
-      color: #2d2416;
-    }
-    .edit-row input[type="file"] {
-      flex: 1;
-      font-size: 13px;
-      color: #6b5d4e;
-    }
-    .edit-row button {
-      background: #2d2416;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    /* ── Cards ── */
-    .card {
-      background: white;
-      border-radius: 16px;
-      margin: 14px 16px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(45,36,22,0.07);
-    }
-
-    .card-title {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.8px;
-      text-transform: uppercase;
-      color: #a89880;
-      padding: 16px 18px 10px;
-    }
-
-    /* ── Rules ── */
-    .rule {
-      display: flex;
-      align-items: center;
-      padding: 14px 18px;
-      border-top: 1px solid #f3ede6;
-      font-size: 15px;
-      color: #2d2416;
-      line-height: 1.4;
-    }
-    .rule:first-of-type { border-top: none; }
-    .rule-icon   { font-size: 20px; width: 34px; flex-shrink: 0; }
-    .rule-text   { flex: 1; }
-    .rule-status { margin-left: 10px; }
-    .allowed { color: #4a7c5a; font-weight: 700; font-size: 14px; }
-    .blocked  { color: #a0522d; font-weight: 700; font-size: 14px; }
-
-    /* ── Notes ── */
-    .note {
-      padding: 12px 18px;
-      border-top: 1px solid #f3ede6;
-      font-size: 14px;
-      color: #6b5d4e;
-      line-height: 1.55;
-    }
-    .note:first-of-type { border-top: none; }
-
-    /* ── Material ── */
-    .material-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: #f3ede6;
-    }
-    .material-cell { background: white; padding: 14px 18px; }
-    .material-label { font-size: 10px; color: #a89880; text-transform: uppercase; letter-spacing: 1.2px; }
-    .material-value { font-size: 15px; font-weight: 600; margin-top: 3px; color: #2d2416; }
+    .hero-text { flex: 1; }
+    .item-name { font-size: 20px; font-weight: 700; line-height: 1.2; margin-bottom: 2px; }
+    .item-brand { font-size: 13px; opacity: 0.75; }
 
     /* ── Share banner ── */
     .share-banner {
-      background: #f2f7f3;
-      border-bottom: 1.5px solid #b8d4bf;
-      padding: 14px 18px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+      background: #f2f7f3; border-bottom: 1.5px solid #b8d4bf;
+      padding: 12px 18px; display: flex; align-items: flex-start; gap: 12px;
     }
-    .share-banner-icon { font-size: 22px; flex-shrink: 0; }
+    .share-banner-icon { font-size: 20px; flex-shrink: 0; }
     .share-banner-body { flex: 1; }
-    .share-banner-title { font-size: 14px; font-weight: 600; color: #2d2416; margin-bottom: 2px; }
-    .share-banner-sub { font-size: 13px; color: #4a6650; line-height: 1.5; }
-    .share-banner-close { font-size: 18px; color: #a89880; cursor: pointer; flex-shrink: 0; padding: 0 2px; }
+    .share-banner-title { font-size: 14px; font-weight: 600; color: #2d2416; margin-bottom: 1px; }
+    .share-banner-sub { font-size: 13px; color: #4a6650; line-height: 1.4; }
+    .share-banner-close { font-size: 18px; color: #a89880; cursor: pointer; flex-shrink: 0; }
+
+    /* ── Admin edit panel ── */
+    .edit-panel {
+      display: none; background: white; margin: 0 16px 4px;
+      border-radius: 14px; padding: 14px 16px;
+      box-shadow: 0 1px 3px rgba(45,36,22,0.1);
+    }
+    .edit-panel.open { display: block; }
+    .edit-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .edit-row:last-child { margin-bottom: 0; }
+    .edit-label { font-size: 11px; font-weight: 600; color: #a89880; text-transform: uppercase; letter-spacing: 1px; width: 48px; flex-shrink: 0; }
+    .edit-row input[type="text"] { flex: 1; border: 1px solid #e8e0d6; border-radius: 8px; padding: 8px 10px; font-size: 14px; color: #2d2416; }
+    .edit-row input[type="file"] { flex: 1; font-size: 12px; color: #6b5d4e; }
+    .edit-row button { background: #2d2416; color: white; border: none; border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+    /* ── Core content ── */
+    .core {
+      padding: 20px 18px 0;
+      flex: 1;
+    }
+
+    .alert-reason {
+      font-size: 17px;
+      font-weight: 500;
+      color: #2d2416;
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    .key-facts { margin-bottom: 16px; }
+    .fact {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0ebe4;
+      font-size: 16px;
+      color: #2d2416;
+    }
+    .fact:first-child { border-top: 1px solid #f0ebe4; }
+    .fact-icon { font-size: 20px; width: 28px; flex-shrink: 0; }
+
+    /* ── Details toggle ── */
+    .details-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 14px 0;
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #4a7c5a;
+      cursor: pointer;
+      letter-spacing: 0.2px;
+    }
+    .details-toggle .chevron { transition: transform 0.2s; font-style: normal; font-size: 13px; }
+    .details-toggle.open .chevron { transform: rotate(90deg); }
+
+    /* ── Details panel ── */
+    .details-panel { display: none; padding-bottom: 16px; }
+    .details-panel.open { display: block; }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #f0ebe4;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .detail-cell { background: white; padding: 12px 14px; }
+    .detail-label { font-size: 10px; color: #a89880; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+    .detail-value { font-size: 15px; font-weight: 600; }
+    .ok { color: #4a7c5a; }
+    .no { color: #a0522d; }
+
+    .material-row {
+      background: white;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .material-label { font-size: 10px; color: #a89880; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .material-value { font-size: 15px; font-weight: 500; color: #2d2416; }
+
+    .notes { margin-bottom: 12px; }
+    .note { font-size: 14px; color: #6b5d4e; line-height: 1.5; padding: 4px 0; }
 
     /* ── Footer ── */
-    .footer {
-      text-align: center;
-      padding: 28px 16px 36px;
-      font-size: 12px;
-      color: #c4b8a8;
-      letter-spacing: 0.5px;
-    }
+    .footer { text-align: center; padding: 20px 16px 32px; font-size: 12px; color: #c4b8a8; }
     .footer strong { color: #a89880; }
   </style>
 </head>
@@ -260,34 +178,33 @@
   <div class="share-banner-icon">📱</div>
   <div class="share-banner-body">
     <div class="share-banner-title">Add to Home Screen</div>
-    <div class="share-banner-sub">Tap <strong>Share →</strong> then <strong>Add to Home Screen</strong> for one-tap access from your phone.</div>
+    <div class="share-banner-sub">Tap Share → Add to Home Screen for one-tap access.</div>
   </div>
   <div class="share-banner-close" onclick="document.getElementById('shareBanner').remove()">✕</div>
 </div>
 {% endif %}
 
-<div class="header {{ level }}">
-  <div class="wordmark">ThreadCare</div>
-  <div class="alert-badge">{{ icons.get(level, '❓') }} {{ labels.get(level, level | title) }}</div>
-  <div class="header-body">
-    <div class="thumbnail-wrap">
+<div class="hero {{ level }}">
+  <div class="hero-top">
+    <div class="wordmark">ThreadCare</div>
+    <div class="alert-badge">{{ icons.get(level, '❓') }} {{ labels.get(level, level | title) }}</div>
+  </div>
+  <div class="hero-body">
+    <div class="thumb-wrap">
       {% if item.photo_url %}
-      <img src="{{ item.photo_url }}" class="thumbnail" alt="{{ item.name or item.item_type }}">
+      <img src="{{ item.photo_url }}" class="thumb" alt="{{ item.name or item.item_type }}">
       {% else %}
-      <div class="thumbnail-placeholder">{{ icons.get(level, '❓') }}</div>
+      <div class="thumb-placeholder">{{ icons.get(level, '❓') }}</div>
       {% endif %}
       {% if admin %}
       <button class="edit-btn" onclick="document.getElementById('edit-panel').classList.toggle('open')">✏️</button>
       {% endif %}
     </div>
-    <div class="header-text">
+    <div class="hero-text">
       <div class="item-name">{{ item.name or item.item_type }}</div>
       {% if item.brand %}<div class="item-brand">{{ item.brand }}</div>{% endif %}
     </div>
   </div>
-  {% if item.alert_reason %}
-  <div class="alert-reason">{{ item.alert_reason }}</div>
-  {% endif %}
 </div>
 
 {% if admin %}
@@ -305,135 +222,111 @@
 </div>
 {% endif %}
 
-<!-- Washing -->
-<div class="card">
-  <div class="card-title">Washing</div>
+<div class="core">
 
-  <div class="rule">
-    <div class="rule-icon">🫧</div>
-    <div class="rule-text">{{ item.care.wash }}</div>
-  </div>
+  {% if item.alert_reason %}
+  <div class="alert-reason">{{ item.alert_reason }}</div>
+  {% endif %}
 
-  <div class="rule">
-    <div class="rule-icon">🌡️</div>
-    <div class="rule-text">Water temperature: <strong>{{ item.care.water_temp | title }}</strong></div>
-  </div>
-
-  <div class="rule">
-    <div class="rule-icon">🧴</div>
-    <div class="rule-text">Bleach</div>
-    <div class="rule-status">
-      {% if item.care.bleach %}
-        <span class="allowed">OK</span>
-      {% else %}
-        <span class="blocked">No</span>
-      {% endif %}
+  <div class="key-facts">
+    <div class="fact">
+      <span class="fact-icon">🫧</span>
+      <span>{{ item.care.wash }}{% if item.care.water_temp and item.care.water_temp != 'do not wash' %} — {{ item.care.water_temp }} water{% endif %}</span>
     </div>
-  </div>
-
-  <div class="rule">
-    <div class="rule-icon">🧼</div>
-    <div class="rule-text">Fabric softener</div>
-    <div class="rule-status">
-      {% if item.care.fabric_softener %}
-        <span class="allowed">OK</span>
-      {% else %}
-        <span class="blocked">No</span>
-      {% endif %}
+    <div class="fact">
+      <span class="fact-icon">🌀</span>
+      <span>
+        {% if item.care.tumble_dry and item.care.hang_dry %}
+          Tumble dry{% if item.care.dry_temp %} ({{ item.care.dry_temp }} heat){% endif %} or hang dry
+        {% elif item.care.tumble_dry %}
+          Tumble dry{% if item.care.dry_temp %} — {{ item.care.dry_temp }} heat{% endif %}
+        {% elif item.care.hang_dry %}
+          Hang dry
+        {% else %}
+          Air dry flat
+        {% endif %}
+      </span>
     </div>
-  </div>
-</div>
-
-<!-- Drying -->
-<div class="card">
-  <div class="card-title">Drying</div>
-
-  <div class="rule">
-    <div class="rule-icon">🌀</div>
-    <div class="rule-text">
-      How to dry:&nbsp;
-      {% if item.care.tumble_dry and item.care.hang_dry %}
-        <strong>Tumble dry{% if item.care.dry_temp %} — {{ item.care.dry_temp | title }} heat{% endif %} or hang dry</strong>
-      {% elif item.care.tumble_dry %}
-        <strong>Tumble dry{% if item.care.dry_temp %} — {{ item.care.dry_temp | title }} heat{% endif %}</strong>
-      {% elif item.care.hang_dry %}
-        <strong>Hang dry</strong>
-      {% else %}
-        <strong>Air dry flat</strong>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="rule">
-    <div class="rule-icon">♨️</div>
-    <div class="rule-text">Iron</div>
-    <div class="rule-status">
-      {% if item.care.iron %}
-        <span class="allowed">OK</span>
-      {% else %}
-        <span class="blocked">No</span>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="rule">
-    <div class="rule-icon">👔</div>
-    <div class="rule-text">Dry clean</div>
-    <div class="rule-status">
-      {% if item.care.dry_clean %}
-        <span class="allowed">OK</span>
-      {% else %}
-        <span class="blocked">No</span>
-      {% endif %}
-    </div>
-  </div>
-</div>
-
-<!-- Special Notes -->
-{% if item.care.special_instructions %}
-<div class="card">
-  <div class="card-title">Special Notes</div>
-  {% for note in item.care.special_instructions %}
-  <div class="note">· {{ note }}</div>
-  {% endfor %}
-</div>
-{% endif %}
-
-<!-- Material -->
-{% set mat = item.material %}
-{% if mat %}
-<div class="card">
-  <div class="card-title">Material</div>
-  <div class="material-grid">
-    {% if mat.shell %}
-    <div class="material-cell">
-      <div class="material-label">Shell</div>
-      <div class="material-value">{{ mat.shell }}</div>
+    {% if item.care.dry_clean %}
+    <div class="fact">
+      <span class="fact-icon">👔</span>
+      <span>Dry clean</span>
     </div>
     {% endif %}
-    {% if mat.lining %}
-    <div class="material-cell">
-      <div class="material-label">Lining</div>
-      <div class="material-value">{{ mat.lining }}</div>
+  </div>
+
+  <button class="details-toggle" id="detailsToggle" onclick="toggleDetails()">
+    See all details
+    <i class="chevron">›</i>
+  </button>
+
+  <div class="details-panel" id="detailsPanel">
+
+    <div class="details-grid">
+      <div class="detail-cell">
+        <div class="detail-label">Bleach</div>
+        <div class="detail-value {% if item.care.bleach %}ok{% else %}no{% endif %}">{% if item.care.bleach %}OK{% else %}No{% endif %}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-label">Fabric softener</div>
+        <div class="detail-value {% if item.care.fabric_softener %}ok{% else %}no{% endif %}">{% if item.care.fabric_softener %}OK{% else %}No{% endif %}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-label">Iron</div>
+        <div class="detail-value {% if item.care.iron %}ok{% else %}no{% endif %}">{% if item.care.iron %}OK{% else %}No{% endif %}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="detail-label">Dry clean</div>
+        <div class="detail-value {% if item.care.dry_clean %}ok{% else %}no{% endif %}">{% if item.care.dry_clean %}OK{% else %}No{% endif %}</div>
+      </div>
     </div>
-    {% endif %}
-    {% if mat.fill %}
-    <div class="material-cell">
-      <div class="material-label">Fill</div>
-      <div class="material-value">{{ mat.fill }}</div>
-    </div>
-    {% endif %}
-    {% if mat.primary %}
-    <div class="material-cell">
+
+    {% set mat = item.material %}
+    {% if mat %}
+    <div class="material-row">
       <div class="material-label">Material</div>
-      <div class="material-value">{{ mat.primary }}</div>
+      <div class="material-value">
+        {% if mat.primary %}{{ mat.primary }}{% endif %}
+        {% if mat.shell %}Shell: {{ mat.shell }}{% endif %}
+        {% if mat.lining %} · Lining: {{ mat.lining }}{% endif %}
+        {% if mat.fill %} · Fill: {{ mat.fill }}{% endif %}
+      </div>
     </div>
     {% endif %}
+
+    {% if item.care.special_instructions %}
+    <div class="notes">
+      {% for note in item.care.special_instructions %}
+      <div class="note">· {{ note }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if admin %}
+    <form method="POST" action="/item/{{ item.item_id }}/delete"
+          onsubmit="return confirm('Remove this item?')"
+          style="text-align:center; padding: 8px 0 4px;">
+      <button type="submit" style="background:none;border:none;color:#c4b8a8;font-size:13px;cursor:pointer;">
+        Remove item
+      </button>
+    </form>
+    {% endif %}
+
   </div>
+
 </div>
-{% endif %}
 
 <div class="footer"><strong>ThreadCare</strong> · {{ item.item_id }}</div>
+
+<script>
+  function toggleDetails() {
+    const panel = document.getElementById("detailsPanel");
+    const toggle = document.getElementById("detailsToggle");
+    const open = panel.classList.toggle("open");
+    toggle.classList.toggle("open", open);
+    toggle.childNodes[0].textContent = open ? "Hide details " : "See all details ";
+  }
+</script>
 
 </body>
 </html>
