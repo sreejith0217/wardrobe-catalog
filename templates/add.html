@@ -93,36 +93,29 @@
     input[type="file"] {
       position: absolute;
       opacity: 0;
-      width: 0;
-      height: 0;
+      width: 1px;
+      height: 1px;
       overflow: hidden;
-      z-index: -1;
-    }
-
-    .photo-btns {
-      display: flex;
-      gap: 10px;
     }
 
     .photo-btn {
-      flex: 1;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 6px;
-      padding: 16px 10px;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px 14px;
       border: 2px dashed #d8cfc4;
       border-radius: 12px;
       background: #faf7f4;
       color: #8a7968;
-      font-size: 13px;
+      font-size: 15px;
       cursor: pointer;
       transition: all 0.2s;
-      text-align: center;
     }
     .photo-btn:hover { border-color: #4a7c5a; color: #4a7c5a; background: #f2f7f3; }
-    .photo-btn .btn-icon { font-size: 24px; }
-    .photo-btn.selected { border-color: #4a7c5a; border-style: solid; background: #f2f7f3; color: #4a7c5a; }
+    .photo-btn .icon { font-size: 22px; }
+    .photo-btn.selected { border-color: #4a7c5a; border-style: solid; background: #f2f7f3; color: #2d2416; }
 
     .preview {
       margin-top: 10px;
@@ -228,17 +221,10 @@
       <label>Care Label Photo <span class="required-badge">required</span></label>
       <div class="photo-input">
         <input type="file" name="label_photo" accept="image/*" id="labelInput">
-        <input type="file" accept="image/*" capture="environment" id="labelCamera">
-        <div class="photo-btns">
-          <label class="photo-btn" id="labelLibraryBtn" for="labelInput">
-            <span class="btn-icon">🖼️</span>
-            <span>Photo Library</span>
-          </label>
-          <label class="photo-btn" id="labelCameraBtn" for="labelCamera">
-            <span class="btn-icon">📷</span>
-            <span>Camera</span>
-          </label>
-        </div>
+        <label class="photo-btn" for="labelInput" id="labelBtn">
+          <span class="icon">🏷️</span>
+          <span id="labelBtnText">Add photo</span>
+        </label>
       </div>
       <div class="preview" id="labelPreview">
         <img id="labelImg" src="" alt="Label preview">
@@ -250,17 +236,10 @@
       <label>Garment Photo <span class="optional-badge">optional</span></label>
       <div class="photo-input">
         <input type="file" name="garment_photo" accept="image/*" id="garmentInput">
-        <input type="file" accept="image/*" capture="environment" id="garmentCamera">
-        <div class="photo-btns">
-          <label class="photo-btn" id="garmentLibraryBtn" for="garmentInput">
-            <span class="btn-icon">🖼️</span>
-            <span>Photo Library</span>
-          </label>
-          <label class="photo-btn" id="garmentCameraBtn" for="garmentCamera">
-            <span class="btn-icon">📷</span>
-            <span>Camera</span>
-          </label>
-        </div>
+        <label class="photo-btn" for="garmentInput" id="garmentBtn">
+          <span class="icon">👕</span>
+          <span id="garmentBtnText">Add photo</span>
+        </label>
       </div>
       <div class="preview" id="garmentPreview">
         <img id="garmentImg" src="" alt="Garment preview">
@@ -284,8 +263,11 @@
 </div>
 
 <script>
-  function showPreview(file, previewId) {
+  function previewPhoto(input, previewId, btnTextId) {
+    const file = input.files[0];
     if (!file) return;
+    document.getElementById(btnTextId).textContent = file.name;
+    document.getElementById(input.id + "Btn").classList.add("selected");
     const preview = document.getElementById(previewId);
     const img = preview.querySelector("img");
     const reader = new FileReader();
@@ -296,36 +278,12 @@
     reader.readAsDataURL(file);
   }
 
-  function syncCameraToInput(cameraInput, mainInput, previewId, libraryBtnId, cameraBtnId) {
-    const file = cameraInput.files[0];
-    if (!file) return;
-    // Copy file to the main (named) input via DataTransfer
-    const dt = new DataTransfer();
-    dt.items.add(file);
-    mainInput.files = dt.files;
-    showPreview(file, previewId);
-    document.getElementById(cameraBtnId).classList.add("selected");
-    document.getElementById(libraryBtnId).classList.remove("selected");
-  }
-
   document.getElementById("labelInput").addEventListener("change", function() {
-    showPreview(this.files[0], "labelPreview");
-    document.getElementById("labelLibraryBtn").classList.add("selected");
-    document.getElementById("labelCameraBtn").classList.remove("selected");
-  });
-
-  document.getElementById("labelCamera").addEventListener("change", function() {
-    syncCameraToInput(this, document.getElementById("labelInput"), "labelPreview", "labelLibraryBtn", "labelCameraBtn");
+    previewPhoto(this, "labelPreview", "labelBtnText");
   });
 
   document.getElementById("garmentInput").addEventListener("change", function() {
-    showPreview(this.files[0], "garmentPreview");
-    document.getElementById("garmentLibraryBtn").classList.add("selected");
-    document.getElementById("garmentCameraBtn").classList.remove("selected");
-  });
-
-  document.getElementById("garmentCamera").addEventListener("change", function() {
-    syncCameraToInput(this, document.getElementById("garmentInput"), "garmentPreview", "garmentLibraryBtn", "garmentCameraBtn");
+    previewPhoto(this, "garmentPreview", "garmentBtnText");
   });
 
   document.getElementById("addForm").addEventListener("submit", function(e) {
