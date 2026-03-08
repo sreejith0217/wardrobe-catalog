@@ -27,9 +27,10 @@ def delete_item(item_id):
 
 
 def upload_photo(item_id, image_bytes):
+    import time
     client = get_client()
-    path = f"{item_id}.jpg"
+    path = f"{item_id}_{int(time.time())}.jpg"
     client.storage.from_("garment-photos").upload(
-        path, image_bytes, {"content-type": "image/jpeg", "upsert": "true"}
+        path, image_bytes, {"content-type": "image/jpeg"}
     )
     return client.storage.from_("garment-photos").get_public_url(path)
