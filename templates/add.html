@@ -263,8 +263,38 @@
 </div>
 
 <script>
-  // Compress image to JPEG, max 1920px wide, 80% quality (~0.5-1MB)
-  function compressImage(file) {
+  // Read EXIF orientation tag from JPEG binary
+  function getOrientation(file) {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const view = new DataView(e.target.result);
+        if (view.getUint16(0, false) !== 0xFFD8) { resolve(1); return; }
+        let offset = 2;
+        while (offset < view.byteLength) {
+          const marker = view.getUint16(offset, false);
+          offset += 2;
+          if (marker === 0xFFE1) {
+            if (view.getUint32(offset + 2, false) !== 0x45786966) { resolve(1); return; }
+            const little = view.getUint16(offset + 8, false) === 0x4949;
+            const tags = view.getUint16(offset + 14, little);
+            for (let i = 0; i < tags; i++) {
+              if (view.getUint16(offset + 16 + i * 12, little) === 0x0112) {
+                resolve(view.getUint16(offset + 16 + i * 12 + 8, little)); return;
+              }
+            }
+          } else if ((marker & 0xFF00) !== 0xFF00) break;
+          else offset += view.getUint16(offset, false);
+        }
+        resolve(1);
+      };
+      reader.readAsArrayBuffer(file.slice(0, 65536));
+    });
+  }
+
+  // Compress image to JPEG, max 1920px, 80% quality, with EXIF rotation applied
+  async function compressImage(file) {
+    const orientation = await getOrientation(file);
     return new Promise(resolve => {
       const img = new Image();
       const url = URL.createObjectURL(file);
@@ -272,10 +302,24 @@
         URL.revokeObjectURL(url);
         const MAX = 1920;
         let w = img.width, h = img.height;
-        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        // Swap dimensions for 90/270 degree rotations
+        const rotated = orientation >= 5;
+        let cw = rotated ? h : w, ch = rotated ? w : h;
+        if (cw > MAX) { ch = Math.round(ch * MAX / cw); cw = MAX; }
         const canvas = document.createElement("canvas");
-        canvas.width = w; canvas.height = h;
-        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+        canvas.width = cw; canvas.height = ch;
+        const ctx = canvas.getContext("2d");
+        // Apply rotation transform based on EXIF orientation
+        switch (orientation) {
+          case 2: ctx.transform(-1,0,0,1,cw,0); break;
+          case 3: ctx.transform(-1,0,0,-1,cw,ch); break;
+          case 4: ctx.transform(1,0,0,-1,0,ch); break;
+          case 5: ctx.transform(0,1,1,0,0,0); break;
+          case 6: ctx.transform(0,1,-1,0,ch,0); break;
+          case 7: ctx.transform(0,-1,-1,0,ch,cw); break;
+          case 8: ctx.transform(0,-1,1,0,0,cw); break;
+        }
+        ctx.drawImage(img, 0, 0, rotated ? ch : cw, rotated ? cw : ch);
         canvas.toBlob(blob => {
           resolve(new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" }));
         }, "image/jpeg", 0.80);
