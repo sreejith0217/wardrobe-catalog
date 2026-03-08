@@ -223,14 +223,14 @@
         <input type="file" name="label_photo" accept="image/*" id="labelInput">
         <input type="file" accept="image/*" capture="environment" id="labelCamera">
         <div class="photo-btns">
-          <div class="photo-btn" id="labelLibraryBtn" onclick="document.getElementById('labelInput').click()">
+          <label class="photo-btn" id="labelLibraryBtn" for="labelInput">
             <span class="btn-icon">🖼️</span>
             <span>Photo Library</span>
-          </div>
-          <div class="photo-btn" id="labelCameraBtn" onclick="document.getElementById('labelCamera').click()">
+          </label>
+          <label class="photo-btn" id="labelCameraBtn" for="labelCamera">
             <span class="btn-icon">📷</span>
             <span>Camera</span>
-          </div>
+          </label>
         </div>
       </div>
       <div class="preview" id="labelPreview">
@@ -245,14 +245,14 @@
         <input type="file" name="garment_photo" accept="image/*" id="garmentInput">
         <input type="file" accept="image/*" capture="environment" id="garmentCamera">
         <div class="photo-btns">
-          <div class="photo-btn" id="garmentLibraryBtn" onclick="document.getElementById('garmentInput').click()">
+          <label class="photo-btn" id="garmentLibraryBtn" for="garmentInput">
             <span class="btn-icon">🖼️</span>
             <span>Photo Library</span>
-          </div>
-          <div class="photo-btn" id="garmentCameraBtn" onclick="document.getElementById('garmentCamera').click()">
+          </label>
+          <label class="photo-btn" id="garmentCameraBtn" for="garmentCamera">
             <span class="btn-icon">📷</span>
             <span>Camera</span>
-          </div>
+          </label>
         </div>
       </div>
       <div class="preview" id="garmentPreview">
