@@ -90,32 +90,18 @@
 
     .photo-input { position: relative; }
 
-    .photo-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    input[type="file"] {
+      display: block;
       width: 100%;
-      padding: 16px 14px;
+      padding: 14px;
       border: 2px dashed #d8cfc4;
       border-radius: 12px;
       background: #faf7f4;
       color: #8a7968;
       font-size: 15px;
       cursor: pointer;
-      transition: all 0.2s;
     }
-    .photo-btn:hover { border-color: #4a7c5a; color: #4a7c5a; background: #f2f7f3; }
-    .photo-btn .icon { font-size: 22px; }
-
-    input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-    }
+    input[type="file"]:focus { outline: none; border-color: #4a7c5a; }
 
     .preview {
       margin-top: 10px;
@@ -220,10 +206,6 @@
     <div class="field">
       <label>Care Label Photo <span class="required-badge">required</span></label>
       <div class="photo-input">
-        <div class="photo-btn" id="labelBtn">
-          <span class="icon">🏷️</span>
-          <span id="labelBtnText">Take photo of care label</span>
-        </div>
         <input type="file" name="label_photo"
                id="labelInput" onchange="previewPhoto(this, 'labelPreview', 'labelBtnText')">
       </div>
@@ -236,10 +218,6 @@
     <div class="field">
       <label>Garment Photo <span class="optional-badge">optional</span></label>
       <div class="photo-input">
-        <div class="photo-btn" id="garmentBtn">
-          <span class="icon">👕</span>
-          <span id="garmentBtnText">Take photo of the item</span>
-        </div>
         <input type="file" name="garment_photo"
                id="garmentInput" onchange="previewPhoto(this, 'garmentPreview', 'garmentBtnText')">
       </div>
